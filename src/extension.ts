@@ -1,26 +1,43 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
+import { exec } from "child_process";
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+let lastPlayed = 0;
+
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "fahhhhh-scream" is now active!');
+    console.log("EXTENSION ACTIVATE CALLED");
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('fahhhhh-scream.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from fahhhhh-scream!');
-	});
+    vscode.window.showInformationMessage("FAAAAH EXTENSION ACTIVE");
 
-	context.subscriptions.push(disposable);
+function playSound() {
+
+    console.log("playSound() CALLED");
+
+    const now = Date.now();
+    if (now - lastPlayed < 2500) return;
+    lastPlayed = now;
+
+    const audioPath = path.join(
+        context.extensionPath,
+        "media",
+        "fahhhhh.wav"
+    );
+
+    console.log("Playing audio silently:", audioPath);
+
+    // Windows silent audio playback using PowerShell
+    exec(`powershell -c (New-Object Media.SoundPlayer "${audioPath}").PlaySync();`);
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+    //  TEST TRIGGER — force sound after 3 seconds
+    setTimeout(() => {
+        console.log("⏱ Timeout trigger firing");
+        playSound();
+    }, 3000);
+}
+
+export function deactivate() {
+    console.log("EXTENSION DEACTIVATED");
+}
