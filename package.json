@@ -12,6 +12,10 @@
   "activationEvents": [
     "onStartupFinished"
   ],
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/PrathamRanka/Faaaahhhh-VS-Code-Extension"
+  },
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
